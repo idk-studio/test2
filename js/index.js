@@ -36,7 +36,6 @@ PhysicsLoader('./js/ammo', () => MainScene())
 
 function init()
 {
-
     canvas = document.getElementById('canvas')
     blocker = document.getElementById('blocker')
     audioElement = document.getElementById('music')
@@ -62,7 +61,7 @@ function init()
 
     scene = new THREE.Scene()
 
-    const light = new THREE.AmbientLight( 0xffffff, .6 );
+    const light = new THREE.AmbientLight( 0xbdb9b9, .8 )
     scene.add(light);
 
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
@@ -113,19 +112,19 @@ function loadResources()
     const exrLoader = new EXRLoader(loadingManager)
     const gltfLoader = new GLTFLoader(loadingManager)
 
-    rgbeLoader.load('./images/1_final.hdr', (texture) =>
-    {
-        texture.flipY = false
-
-        lightmaps[0] = texture
-    })
-
-    rgbeLoader.load('./images/2_final.hdr', (texture) =>
-    {
-        texture.flipY = false
-
-        lightmaps[1] = texture
-    })
+    // rgbeLoader.load('./images/1_final.hdr', (texture) =>
+    // {
+    //     texture.flipY = false
+    //
+    //     lightmaps[0] = texture
+    // })
+    //
+    // rgbeLoader.load('./images/2_final.hdr', (texture) =>
+    // {
+    //     texture.flipY = false
+    //
+    //     lightmaps[1] = texture
+    // })
 
     exrLoader.load('./images/kloppenheim_02_4k.exr', (texture) =>
     {
@@ -172,6 +171,11 @@ function loadResources()
         console.log(scene)
     })
 
+    gltfLoader.load('./models/locations.glb', (gltf) =>
+    {
+        scene.add(gltf.scene)
+    })
+
     gltfLoader.load('./models/Zuckerberg.glb', (gltf) =>
     {
         zuckerberg = SkeletonUtils.clone(gltf.scene)
@@ -189,7 +193,7 @@ function loadResources()
         mixer1 = new THREE.AnimationMixer(zuckerberg)
         mixer1.clipAction(gltf.animations[0]).play()
 
-        scene.add(zuckerberg)
+        // scene.add(zuckerberg)
 
     })
 
@@ -210,7 +214,7 @@ function loadResources()
         mixer2 = new THREE.AnimationMixer(buterin)
         mixer2.clipAction(gltf.animations[0]).play()
 
-        scene.add(buterin)
+        // scene.add(buterin)
     })
 
     gltfLoader.load('./models/Baby.glb', (gltf) =>
@@ -233,7 +237,7 @@ function loadResources()
         mixer3.clipAction(gltf.animations[0]).play()
         mixer4.clipAction(gltf.animations[0]).play()
 
-        scene.add(baby1, baby2, baby3, baby4)
+        // scene.add(baby1, baby2, baby3, baby4)
         mixers.push(mixer1, mixer2, mixer3, mixer4)
     })
 
@@ -297,7 +301,7 @@ function loadResources()
                     if (child.material.name === 'MAT_floor')
                     {
                         emissiveFloorMaterial = child.material
-                        emissiveFloorMaterial.emissiveIntensity = 4
+                        emissiveFloorMaterial.emissiveIntensity = 2
                         changeMaterialOffset()
                     }
 
@@ -338,11 +342,101 @@ function loadResources()
                     fireplaceMaterial = child.material
                     fireplaceMaterial.emissiveIntensity = 10
                 }
+
             }
         })
 
         torchAnimator = new TextureAnimator(torchMaterial.emissiveMap, 6, 6, 36, 50)
         fireplaceAnimator = new TextureAnimator(fireplaceMaterial.emissiveMap, 8, 8, 64, 50)
+
+        let torchFirePlace = scene.getObjectByName('BILLBOARD_fireplace')
+        let torch00 = scene.getObjectByName('BILLBOARD_torch_00')
+        let torch01 = scene.getObjectByName('BILLBOARD_torch_01')
+        let torch02 = scene.getObjectByName('BILLBOARD_torch_02')
+        let torch03 = scene.getObjectByName('BILLBOARD_torch_03')
+        let torch04 = scene.getObjectByName('BILLBOARD_torch_04')
+        let torch05 = scene.getObjectByName('BILLBOARD_torch_05')
+        let torch06 = scene.getObjectByName('BILLBOARD_torch_06')
+        let torch07 = scene.getObjectByName('BILLBOARD_torch_07')
+        let torch08 = scene.getObjectByName('BILLBOARD_torch_08')
+        let torch09 = scene.getObjectByName('BILLBOARD_torch_09')
+        let torch010 = scene.getObjectByName('BILLBOARD_torch_10')
+        let torch011 = scene.getObjectByName('BILLBOARD_torch_11')
+        let torch012 = scene.getObjectByName('BILLBOARD_torch_12')
+
+        let bulbFirePlace = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb00 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb01 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb02 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb03 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb04 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb05 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb06 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb07 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb08 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb09 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb10 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb11 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+        let bulb12 = new THREE.PointLight(0xfa9e02, 1, 20,2)
+
+        let bulbGeom = new THREE.SphereGeometry(0.02, 16, 8)
+        let bulbMat = new THREE.MeshStandardMaterial({
+            emissive: 0xffffee,
+            emissiveIntensity: 1,
+            color: 0x000000
+        })
+
+        bulbFirePlace.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb00.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb01.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb02.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb03.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb04.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb05.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb06.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb07.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb08.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb09.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb10.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb11.add(new THREE.Mesh(bulbGeom, bulbMat))
+        bulb12.add(new THREE.Mesh(bulbGeom, bulbMat))
+
+        bulbFirePlace.position.set(torchFirePlace.position.x, torchFirePlace.position.y, torchFirePlace.position.z)
+        bulb00.position.set(torch00.position.x, torch00.position.y, torch00.position.z)
+        bulb01.position.set(torch01.position.x, torch01.position.y, torch01.position.z)
+        bulb02.position.set(torch02.position.x, torch02.position.y, torch02.position.z)
+        bulb03.position.set(torch03.position.x, torch03.position.y, torch03.position.z)
+        bulb04.position.set(torch04.position.x, torch04.position.y, torch04.position.z)
+        bulb05.position.set(torch05.position.x, torch05.position.y, torch05.position.z)
+        bulb06.position.set(torch06.position.x, torch06.position.y, torch06.position.z)
+        bulb07.position.set(torch07.position.x, torch07.position.y, torch07.position.z)
+        bulb08.position.set(torch08.position.x, torch08.position.y, torch08.position.z)
+        bulb09.position.set(torch09.position.x, torch09.position.y, torch09.position.z)
+        bulb10.position.set(torch010.position.x, torch010.position.y, torch010.position.z)
+        bulb11.position.set(torch011.position.x, torch011.position.y, torch011.position.z)
+        bulb12.position.set(torch012.position.x, torch012.position.y, torch012.position.z)
+
+        bulbFirePlace.castShadow = true
+        bulb00.castShadow = true
+        bulb01.castShadow = true
+        bulb02.castShadow = true
+        bulb03.castShadow = true
+        bulb04.castShadow = true
+        bulb05.castShadow = true
+        bulb06.castShadow = true
+        bulb07.castShadow = true
+        bulb08.castShadow = true
+        bulb09.castShadow = true
+        bulb10.castShadow = true
+        bulb11.castShadow = true
+        bulb12.castShadow = true
+
+        scene.add(bulbFirePlace, bulb00, bulb01, bulb02, bulb03, bulb04, bulb05, bulb06, bulb07, bulb08, bulb09, bulb10, bulb11, bulb12)
+
+
+        // const hemiLight = new THREE.HemisphereLight( 0xfa9e02, 0x0f0e0d, 1 )
+        // torchLight.add(hemiLight)
+        // console.log(torchLight)
 
         door = scene.getObjectByName('MESH_door')
         levelCollision = scene.getObjectByName('COLLISION_level')
@@ -351,7 +445,7 @@ function loadResources()
         laptopCollision = scene.getObjectByName('COLLISION_laptop')
         foxCollision = scene.getObjectByName('COLLISION_fox')
         leverCollision = scene.getObjectByName('COLLISION_lever')
-        hiddenDoor = scene.getObjectByName('MESH_hiddenDoor')
+        //hiddenDoor = scene.getObjectByName('MESH_hiddenDoor')
         button1Collision = scene.getObjectByName('COLLISION_button_01')
         button2Collision = scene.getObjectByName('COLLISION_button_02')
         button3Collision = scene.getObjectByName('COLLISION_button_03')
@@ -364,6 +458,7 @@ function loadResources()
         baby2Locator = scene.getObjectByName('LOCATOR_baby_02')
         baby3Locator = scene.getObjectByName('LOCATOR_baby_03')
         baby4Locator = scene.getObjectByName('LOCATOR_baby_04')
+
 
         discoBall = scene.getObjectByName('MESH_discoball')
 
@@ -390,8 +485,8 @@ function loadResources()
         leverCollision.body.setCollisionFlags(2)
         leverCollision.visible = false
 
-        physics.add.existing(hiddenDoor, { shape: 'convex' })
-        hiddenDoor.body.setCollisionFlags(2)
+        //physics.add.existing(hiddenDoor, { shape: 'convex' })
+        //hiddenDoor.body.setCollisionFlags(2)
 
         physics.add.existing(button1Collision, { shape: 'convex' })
         button1Collision.body.setCollisionFlags(2)
@@ -413,27 +508,31 @@ function loadResources()
         player.visible = false
         player.layers.set(1)
 
+        //this
         musicLocator.add(positionalAudio)
 
-        zuckerberg.position.copy(zuckerbergLocator.position)
+        zuckerberg.position.set(zuckerbergLocator.position.x, zuckerbergLocator.position.y, zuckerbergLocator.position.z)
         zuckerberg.rotation.copy(zuckerbergLocator.rotation)
 
-        buterin.position.copy(buterinLocator.position)
+        buterin.position.set(buterinLocator.position.x, buterinLocator.position.y, buterinLocator.position.z)
         buterin.rotation.copy(buterinLocator.rotation)
 
-        baby1.position.copy(baby1Locator.position)
+        baby1.position.set(baby1Locator.position.x, baby1Locator.position.y, baby1Locator.position.z)
 
-        baby2.position.copy(baby2Locator.position)
+        baby2.position.set(baby2Locator.position.x, baby2Locator.position.y, baby2Locator.position.z)
         baby2.rotation.copy(baby2Locator.rotation)
         baby2.scale.set(1.2, 1.2, 1.2)
 
-        baby3.position.copy(baby3Locator.position)
+        baby3.position.set(baby3Locator.position.x, baby3Locator.position.y, baby3Locator.position.z)
         baby3.rotation.copy(baby3Locator.rotation)
         baby3.scale.set(1.2, 1.2, 1.2)
 
-        baby4.position.copy(baby4Locator.position)
+        baby4.position.set(baby4Locator.position.x, baby4Locator.position.y, baby4Locator.position.z)
         baby4.rotation.copy(baby4Locator.rotation)
         baby4.scale.set(1.2, 1.2, 1.2)
+
+        scene.add(baby1, baby3, baby4, zuckerberg, buterin)
+        //till there
     }
 
     setupEvents()
@@ -702,7 +801,7 @@ function update()
         doorCollision.body.needUpdate = true
 
         // Update hidden door collider with animation
-        hiddenDoor.body.needUpdate = true
+        // hiddenDoor.body.needUpdate = true
 
         // Rotate billboards
         for (let i = 0; i < torchBillboards.length; i++)
@@ -715,7 +814,9 @@ function update()
         fireplaceAnimator.update(1000 * delta)
 
         // Emissive material animation
-        emissiveMaterial.emissiveMap.offset.x += delta / 15
+        if (emissiveMaterial && emissiveMaterial.emissiveMap) {
+            emissiveMaterial.emissiveMap.offset.x += delta / 15;
+        }
 
         bubblesMaterial.map.offset.y += delta / 15
 
